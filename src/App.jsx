@@ -16,13 +16,15 @@ function App() {
   const [vars, setVars] = useState([]);
   const [startWithTrue, setStartWithTrue] = useState(false);
   const [binaryMode, setBinaryMode] = useState(false);
+  const [conclusion, setConclusion] = useState("");
 
   const handleGenerate = () => {
     const v = getVariables(formula);
     setVars(v);
     const combos = generateCombinations(v, startWithTrue);
     const subs = getSubexpressionsAndValues(formula, combos);
-    // Construir la tabla
+    // Construir la tabla: cada fila incluye los valores de las variables
+    // y para cada subexpresión (sin las variables puras) su resultado en cada combinación
     const table = combos.map((combo, i) => {
       const rowData = { ...combo };
       subs.forEach((sub) => {
@@ -32,6 +34,33 @@ function App() {
     });
     setSubexpressions(subs);
     setTruthTable(table);
+
+    // Calcular la conclusión a partir de la última subexpresión (la fórmula completa)
+    if (subs.length > 0) {
+      const finalLabel = subs[subs.length - 1].label;
+      const allFinalValues = table.map((row) => row[finalLabel]);
+      let concl = "";
+      if (allFinalValues.every((v) => v === true)) {
+        concl = "Tautología";
+      } else if (allFinalValues.every((v) => v === false)) {
+        concl = "Contradicción";
+      } else {
+        concl = "Contingencia";
+      }
+      setConclusion(concl);
+    }
+  };
+
+  // Función para limpiar los datos (fórmula, tabla, subexpresiones y conclusión)
+  const handleClearAll = () => {
+    setFormula("");
+    setTruthTable([]);
+    setSubexpressions([]);
+    setVars([]);
+    setConclusion("");
+    // Opcionalmente, reinicias también las opciones:
+    setStartWithTrue(false);
+    setBinaryMode(false);
   };
 
   const displayValue = (val) => {
@@ -40,8 +69,7 @@ function App() {
     return <span className={val ? "verdadero" : "falso"}>{text}</span>;
   };
 
-  // Esta clase condicional decidirá si todo se muestra centrado
-  // (cuando la tabla no existe) o en dos columnas (cuando sí existe).
+  // La clase del layout cambia según si ya se generó la tabla
   const layoutClass = truthTable.length > 0 ? "two-cols" : "centered";
 
   return (
@@ -60,9 +88,12 @@ function App() {
           cols={50}
           placeholder="Escribe aquí tu fórmula..."
         />
+
         <div className="buttons-row">
           <button onClick={handleGenerate}>Generar Tabla</button>
+          <button onClick={handleClearAll}>Limpiar</button>
         </div>
+
         <div className="buttons-row">
           <label>
             <input
@@ -96,7 +127,7 @@ function App() {
         </div>
       </div>
 
-      {/* Sección de la tabla (solo se muestra si truthTable.length > 0) */}
+      {/* Sección de la tabla (solo se muestra si truthTable no está vacía) */}
       {truthTable.length > 0 && (
         <div className="table-section">
           <table>
@@ -123,6 +154,9 @@ function App() {
               ))}
             </tbody>
           </table>
+          <div className="conclusion">
+            <strong>Conclusión:</strong> {conclusion}
+          </div>
         </div>
       )}
     </div>
