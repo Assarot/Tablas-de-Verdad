@@ -1,0 +1,143 @@
+/* Reset y configuración global */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ocupa toda la pantalla */
+}
+
+/* Layout principal */
+.main-layout {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Cuando no hay tabla, centramos todo en pantalla */
+.main-layout.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Cuando hay tabla, usamos dos columnas */
+.main-layout.two-cols {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Alinea la parte superior */
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Contenedor general de la calculadora */
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+/* Sección de la calculadora */
+.calc-section {
+  max-width: 400px; /* Ajusta según prefieras */
+  margin-bottom: 20px;
+}
+
+/* Sección de la tabla */
+.table-section {
+  overflow-x: auto; /* Por si hay muchas columnas */
+}
+
+/* Estilos para la pantalla (donde se muestra la fórmula) */
+.screen {
+  background-color: #eee;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  min-height: 40px;
+  color: #111;
+}
+
+/* Teclado lógico */
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttons-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #333;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+/* Estilos para la tabla */
+.tabla {
+  margin-top: 20px;
+}
+
+table {
+  margin: auto;
+  border-collapse: collapse;
+  font-size: 18px;
+  font-family: sans-serif;
+}
+
+th,
+td {
+  border: 1px solid #aaa;
+  padding: 6px 12px;
+  text-align: center;
+}
+
+/* Colores para valores */
+.verdadero {
+  color: green;
+  font-weight: bold;
+}
+
+.falso {
+  color: red;
+  font-weight: bold;
+}
+
+/* Opcional: Estilos para el input de importación */
+.import-section {
+  margin: 10px 0;
+}
+
+/* Estilos para el recuadro de pasos (si lo usas) */
+.steps-box {
+  background: #f0f0f0;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.steps-box p {
+  margin: 5px 0;
+  font-family: monospace;
+}
